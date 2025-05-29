@@ -46,12 +46,35 @@ def scrape_case(url,case_code):
     filename="case_no_"+case_code+".html"
     with open(filename, "w", encoding = 'utf-8') as file:
 
-        head_tags=soup.head
+        # head_tags=soup.head
         body_tags=soup.find_all('p')
 
-        file.write(str(soup.find_all("p")))
+        markup = """
+                <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Document</title>
+                </head>
+                <body>
+                    
+                </body>
+                </html>
+                """
+        
+        output_soup=BeautifulSoup(markup,"html.parser")
+        # body= output_soup.body 
+
+        # output_soup= body.insert(1,body_tags)
+        for p_tag in  body_tags:
+            output_soup.body.append(p_tag) 
+
+        file.write(str(output_soup))
+
+        # file.write(str(soup.find_all("p")))
         # file.write(str(soup.prettify()))
-        # file.write(str(soup.get_text()))
+        # file.write(str(soup.get_text(" ")))
 
     with open('case-list.csv', 'a', newline='') as csvfile:
         casewriter = csv.writer(csvfile, delimiter=' ',)
